@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: cloudninjas
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  database:
+    image: omaradel/cloud-database:v4
+    container_name: cloud-db
+    restart: always
+    environment:
+      DB_HOST: mysql
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mysql
+
+  backend:
+    image: omaradel/cloud-backend:v1
+    container_name: cloud-backend
+    restart: always
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+
+  frontend:
+    image: cloud-frontend:v1
+    container_name: cloud-frontend
+    restart: always
+    environment:
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:
+
