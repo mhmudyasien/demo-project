@@ -28,8 +28,11 @@ metadata:
   name: frontend
   namespace: cloud-ninjas
 spec:
+  type: NodePort
   selector:
     app: frontend
   ports:
   - port: 80
     targetPort: 8501
+    nodePort: 30080
+

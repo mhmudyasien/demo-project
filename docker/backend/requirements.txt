@@ -4,4 +4,4 @@ sqlalchemy
 pymysql
 redis
 python-dotenv
-
+cryptography
