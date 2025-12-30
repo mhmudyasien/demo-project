@@ -24,12 +24,12 @@ spec:
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: backend
+              name: backend-sec
               key: DB_USER
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
-              name: backend
+              name: backend-sec
               key: DB_PASS
         - name: REDIS_HOST
           value: redis
