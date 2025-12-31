@@ -15,6 +15,13 @@ spec:
       labels:
         app: mysql
     spec:
+      initContainers:
+        - name: volume-permissions-fix
+          image: busybox
+          command: ["sh", "-c", "chown -R 27:27 /var/lib/mysql"]
+          volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
       containers:
       - name: mysql
         image: mysql:8.0
@@ -78,6 +85,7 @@ spec:
     app: mysql
   ports:
   - port: 3306
+    targetPort: 3306
     name: mysql
 ---
 apiVersion: v1
