@@ -30,7 +30,7 @@ jobs:
       #     pytest --cov=./ --cov-report=xml
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@7d6e8a4f9b2c1e8a5d3f4b5c6a7d8e9f0a1b2c3d
+        uses: SonarSource/sonarqube-scan-action@v1.5.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: mhmudyasien_demo-project
