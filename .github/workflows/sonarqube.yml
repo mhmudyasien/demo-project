@@ -33,5 +33,5 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: mhmudyasien
+          SONAR_PROJECT_KEY: mhmudyasien_demo-project
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
