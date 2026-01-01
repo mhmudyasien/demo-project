@@ -1,0 +1,37 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for Sonar to analyze history
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Adjust if your deps file has a different name
+
+      - name: Run tests and generate coverage
+        run: |
+          pip install pytest pytest-cov
+          pytest --cov=./ --cov-report=xml
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: mhmudyasien
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
