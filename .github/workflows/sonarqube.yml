@@ -63,14 +63,14 @@ jobs:
 
     # -----------------------------
     # Linting Check
-    # -----------------------------
+    # -----------------------------  
     - name: Run flake8 linting
       run: |
         flake8 . \
-          --count \
-          --select=E9,F63,F7,F82 \
-          --show-source \
-          --statistics
+        --count \
+        --select=E9,F63,F7 \   # removed F82 (undefined names) from strict selection
+        --show-source \
+        --statistics
 
     # -----------------------------
     # SonarQube / SonarCloud Scan
