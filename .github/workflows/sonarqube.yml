@@ -68,7 +68,7 @@ jobs:
       run: |
         flake8 . \
         --count \
-        --select=E9,F63,F7 \   # removed F82 (undefined names) from strict selection
+        --select=E9,F63,F7 \
         --show-source \
         --statistics
 
