@@ -21,7 +21,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 0  # Required for SonarQube PR analysis
 
     # -----------------------------
     # Secret Check
@@ -73,26 +73,11 @@ jobs:
         --statistics
 
     # -----------------------------
-    # SonarQube / SonarCloud Scan
+    # SonarQube / SonarCloud Scan (SINGLE SCAN)
     # -----------------------------
-    - name: Scan Backend
+    - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v7.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      with:
-        projectKey: your-project-backend
-        projectName: "Your Project - Backend"
-        projectVersion: 1.0
-        projectBaseDir: docker/backend
-
-    - name: Scan Frontend
-      uses: SonarSource/sonarqube-scan-action@v7.0.0
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      with:
-        projectKey: your-project-frontend
-        projectName: "Your Project - Frontend"
-        projectVersion: 1.0
-        projectBaseDir: docker/frontend
+      # No 'with' inputs needed — uses sonar-project.properties automatically
