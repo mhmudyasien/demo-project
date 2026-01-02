@@ -77,7 +77,5 @@ jobs:
     # -----------------------------
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v7.0.0
-      with:
-          projectBaseDir: docker/backend,docker/frontend
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
