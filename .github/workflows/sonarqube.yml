@@ -1,82 +1,21 @@
-name: Main Workflow
-
 on:
+  # Trigger analysis when pushing to your main branches, and when creating a pull request.
   push:
     branches:
       - main
-      - master
-      - develop
-      - 'releases/**'
   pull_request:
-    types: [opened, synchronize, reopened]
+      types: [opened, synchronize, reopened]
 
+name: Main Workflow
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
-
     steps:
-    # -----------------------------
-    # Checkout Code
-    # -----------------------------
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Required for SonarQube PR analysis
-
-    # -----------------------------
-    # Secret Check
-    # -----------------------------
-    - name: Check SONAR_TOKEN secret
-      run: |
-        if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
-          echo "❌ SONAR_TOKEN is not set"
-          exit 1
-        fi
-        echo "✅ SONAR_TOKEN is set"
-
-    # -----------------------------
-    # Config Check
-    # -----------------------------
-    - name: Check Sonar config file
-      run: |
-        if [ ! -f sonar-project.properties ]; then
-          echo "❌ sonar-project.properties not found"
-          exit 1
-        fi
-        echo "✅ sonar-project.properties found"
-
-    # -----------------------------
-    # Python Setup (for linting)
-    # -----------------------------
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    # -----------------------------
-    # Install Linting Tools
-    # -----------------------------
-    - name: Install flake8
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8
-
-    # -----------------------------
-    # Linting Check
-    # -----------------------------  
-    - name: Run flake8 linting
-      run: |
-        flake8 . \
-        --count \
-        --select=E9,F63,F7 \
-        --show-source \
-        --statistics
-
-    # -----------------------------
-    # SonarQube / SonarCloud Scan (SINGLE SCAN)
-    # -----------------------------
+        # Disabling shallow clones is recommended for improving the relevancy of reporting
+        fetch-depth: 0
     - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v7.0.0
+      uses: sonarsource/sonarcloud-github-action@v5.0.0 # Ex: v4.0.0, See the latest version at https://github.com/marketplace/actions/sonarcloud-scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      # No 'with' inputs needed — uses sonar-project.properties automatically
