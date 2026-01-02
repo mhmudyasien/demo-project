@@ -75,9 +75,24 @@ jobs:
     # -----------------------------
     # SonarQube / SonarCloud Scan
     # -----------------------------
-    - name: SonarQube Scan
+    - name: Scan Backend
       uses: SonarSource/sonarqube-scan-action@v7.0.0
-      with:
-        projectBaseDir: docker/backend,docker/frontend
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      with:
+        projectKey: your-project-backend
+        projectName: "Your Project - Backend"
+        projectVersion: 1.0
+        projectBaseDir: docker/backend
+
+    - name: Scan Frontend
+      uses: SonarSource/sonarqube-scan-action@v7.0.0
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      with:
+        projectKey: your-project-frontend
+        projectName: "Your Project - Frontend"
+        projectVersion: 1.0
+        projectBaseDir: docker/frontend
